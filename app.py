@@ -5,7 +5,9 @@ from itertools import combinations
 
 app = Flask(__name__)
 
-DATABASE = "basketiq.db"
+import os
+
+DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "basketiq.db")
 
 
 # Initialize database
@@ -271,6 +273,7 @@ def analyze():
 
 
 # Start application
+initialize_db()
+
 if __name__ == "__main__":
-    initialize_db()
     app.run(debug=True)
