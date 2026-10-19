@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasketIQ | Market Basket Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">B</div>
+            <div>
+                <h2>BasketIQ</h2>
+                <small>RETAIL INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <p class="nav-label">WORKSPACE</p>
+        <a class="nav-item active" href="#dashboard">▦ &nbsp; Dashboard</a>
+        <a class="nav-item" href="#transactions">▤ &nbsp; Transactions</a>
+        <a class="nav-item" href="#analysis">⌘ &nbsp; Association Rules</a>
+
+        <div class="sidebar-bottom">
+            <div class="status-dot"></div>
+            <span>Local database connected</span>
+            <small>SQLite</small>
+        </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">ANALYTICS / OVERVIEW</p>
+                <h1>Market Basket Analysis</h1>
+                <p class="subtitle">Discover what your customers buy together.</p>
+            </div>
+            <div class="live-badge"><span></span> SYSTEM READY</div>
+        </header>
+
+        <section class="welcome-card">
+            <div>
+                <p class="eyebrow">WELCOME TO BASKETIQ</p>
+                <h2>Turn transactions into insights.</h2>
+                <p>Use the Apriori algorithm to uncover meaningful product associations.</p>
+                <button class="primary-btn" onclick="loadSampleData()">Load Sample Data ↗</button>
+            </div>
+            <div class="welcome-art">
+                <div class="art-circle">✦</div>
+                <div class="art-card">PRODUCT<br><strong>INSIGHTS</strong></div>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-top"><span>Total Transactions</span><span class="stat-icon">▤</span></div>
+                <h2 id="totalTransactions">0</h2>
+                <p>Records in your database</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><span>Unique Products</span><span class="stat-icon">◇</span></div>
+                <h2 id="uniqueProducts">0</h2>
+                <p>Different items purchased</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><span>Association Rules</span><span class="stat-icon">⌘</span></div>
+                <h2 id="totalRules">0</h2>
+                <p>Rules discovered by Apriori</p>
+            </div>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel" id="transactions">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Transaction Manager</h3>
+                        <p>Add products purchased together.</p>
+                    </div>
+                    <span class="panel-number">01</span>
+                </div>
+
+                <form id="transactionForm">
+                    <label for="itemsInput">PRODUCT ITEMS</label>
+                    <input id="itemsInput" type="text" placeholder="e.g. Milk, Bread, Butter" required>
+                    <small class="hint">Separate each product with a comma.</small>
+                    <button class="primary-btn full-btn" type="submit">+ Add Transaction</button>
+                </form>
+
+                <div class="button-row">
+                    <button class="secondary-btn" onclick="loadSampleData()">↻ Sample Data</button>
+                    <button class="danger-btn" onclick="clearTransactions()">Clear All</button>
+                </div>
+
+                <div class="panel-heading recent-heading">
+                    <div>
+                        <h3>Recent Transactions</h3>
+                        <p>Your saved purchase records.</p>
+                    </div>
+                </div>
+                <div id="transactionList" class="transaction-list">
+                    <p class="empty-state">Loading transactions...</p>
+                </div>
+            </div>
+
+            <div class="panel" id="analysis">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Association Analysis</h3>
+                        <p>Find products frequently bought together.</p>
+                    </div>
+                    <span class="panel-number">02</span>
+                </div>
+
+                <div class="field-group">
+                    <label for="supportInput">MINIMUM SUPPORT (%)</label>
+                    <input id="supportInput" type="number" min="1" max="100" value="25">
+                    <small class="hint">How frequently an itemset must appear.</small>
+                </div>
+
+                <div class="field-group">
+                    <label for="confidenceInput">MINIMUM CONFIDENCE (%)</label>
+                    <input id="confidenceInput" type="number" min="1" max="100" value="50">
+                    <small class="hint">How often the rule is correct.</small>
+                </div>
+
+                <button class="primary-btn full-btn analyze-btn" onclick="runAnalysis()">✦ Run Apriori Analysis</button>
+
+                <div id="analysisMessage" class="message-box">
+                    <span class="message-icon">i</span>
+                    <p>Add transactions, then run the analysis to discover association rules.</p>
+                </div>
+
+                <div id="rulesContainer">
+                    <div class="empty-analysis">
+                        <div class="empty-symbol">⌘</div>
+                        <h4>Insights will appear here</h4>
+                        <p>Your discovered product relationships will be displayed after analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <span>BasketIQ <span class="footer-muted">· Market Basket Analysis</span></span>
+            <span>Powered by the Apriori Algorithm</span>
+        </footer>
+    </main>
+
+    <div id="toast" class="toast"></div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
