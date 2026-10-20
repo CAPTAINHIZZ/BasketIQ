@@ -1,25 +1,152 @@
 
-<section class="frequent-section">
-    <h2>Frequently Bought Items</h2>
-    <p>Products most commonly found in customer transactions.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasketIQ | Market Basket Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/">
+            <span class="brand-icon">B</span>
+            <span>BasketIQ<small>MARKET INTELLIGENCE</small></span>
+        </a>
+        <span class="status"><span></span> Analysis Dashboard</span>
+    </header>
 
-    <div id="frequentItemsSummary"></div>
+    <main class="container">
+        <section class="hero">
+            <p class="eyebrow">SMARTER RETAIL DECISIONS</p>
+            <h1>Understand what customers <span>buy together.</span></h1>
+            <p class="hero-description">
+                Explore shopping patterns, discover frequently purchased products,
+                and uncover useful product associations.
+            </p>
+        </section>
 
-    <div class="table-wrapper">
-        <table class="frequent-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Product</th>
-                    <th>Transactions</th>
-                    <th>Purchase Frequency</th>
-                </tr>
-            </thead>
-            <tbody id="frequentItemsBody">
-                <tr>
-                    <td colspan="4">Loading products...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+        <section class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-label">Total Transactions</span>
+                <strong id="totalTransactions">0</strong>
+                <span class="stat-note">Saved shopping baskets</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Unique Products</span>
+                <strong id="uniqueProducts">0</strong>
+                <span class="stat-note">Different products recorded</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Association Rules</span>
+                <strong id="totalRules">0</strong>
+                <span class="stat-note">Discovered by Apriori</span>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">TRANSACTION MANAGEMENT</p>
+                    <h2>Add a shopping basket</h2>
+                    <p>Enter product names separated by commas.</p>
+                </div>
+            </div>
+
+            <form id="transactionForm">
+                <label for="itemsInput">Products in this transaction</label>
+                <div class="input-row">
+                    <input id="itemsInput" type="text"
+                        placeholder="e.g. Bread, Milk, Eggs" required>
+                    <button class="primary-btn" type="submit">+ Add Transaction</button>
+                </div>
+            </form>
+
+            <div class="button-row">
+                <button class="secondary-btn" type="button"
+                    onclick="loadSampleData()">Load Sample Data</button>
+                <button class="danger-btn" type="button"
+                    onclick="clearTransactions()">Clear All Data</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR DATA</p>
+                    <h2>Recent transactions</h2>
+                    <p>Your latest saved shopping baskets.</p>
+                </div>
+            </div>
+            <div id="transactionList" class="transaction-list">
+                <p class="empty-state">Loading transactions...</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PATTERN DISCOVERY</p>
+                    <h2>Apriori analysis</h2>
+                    <p>Choose thresholds to discover product associations.</p>
+                </div>
+            </div>
+
+            <div class="analysis-controls">
+                <div class="field">
+                    <label for="supportInput">Minimum support (%)</label>
+                    <input id="supportInput" type="number"
+                        min="1" max="100" value="20">
+                    <small>How often products must appear.</small>
+                </div>
+                <div class="field">
+                    <label for="confidenceInput">Minimum confidence (%)</label>
+                    <input id="confidenceInput" type="number"
+                        min="1" max="100" value="50">
+                    <small>How reliable an association must be.</small>
+                </div>
+                <button class="primary-btn analyze-btn" type="button"
+                    onclick="runAnalysis()">✦ Run Apriori Analysis</button>
+            </div>
+
+            <div id="analysisMessage" class="analysis-message">
+                <p>Add transactions, then run the analysis to discover rules.</p>
+            </div>
+            <div id="rulesContainer" class="rules-container"></div>
+        </section>
+
+        <section class="panel frequent-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PRODUCT INSIGHTS</p>
+                    <h2>Frequently bought items</h2>
+                    <p>Products most commonly found in customer transactions.</p>
+                </div>
+            </div>
+            <div id="frequentItemsSummary" class="frequent-summary">
+                Loading product statistics...
+            </div>
+            <div class="table-wrapper">
+                <table class="frequent-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Product</th>
+                            <th>Transactions</th>
+                            <th>Purchase Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody id="frequentItemsBody">
+                        <tr><td colspan="4">Loading products...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>BasketIQ · Market Basket Analysis</footer>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
